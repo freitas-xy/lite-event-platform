@@ -4,6 +4,8 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'cmp-label',
   imports: [CommonModule],
-  templateUrl: './label.html'
+  template: `<div class="block text-gray-500 text-sm font-medium mb-2">
+    <ng-content></ng-content>
+  </div>`,
 })
-export class LabelComponent { }
+export class LabelComponent {}

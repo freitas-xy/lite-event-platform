@@ -56,3 +56,5 @@ export const environment = {
   supabaseAnonKey: 'your-anon-key'
 }
 ```
+
+Para oprojeto funcionar desabilite a funcionalidade do supabase de confirmar email, está dentro de Authentification/Sign In / Prviders 

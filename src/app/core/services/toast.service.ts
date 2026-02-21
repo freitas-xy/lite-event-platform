@@ -7,18 +7,20 @@ export interface Toast {
   duration?: number;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ToastService {
   toasts = signal<Toast[]>([]);
   private nextId = 0;
 
-  show(message: string, type: 'success' | 'danger' | 'warning' = 'success', duration: number = 5000): void {
+  show(
+    message: string,
+    type: 'success' | 'danger' | 'warning' = 'success',
+    duration: number = 5000,
+  ): void {
     const id = `toast-${this.nextId++}`;
     const toast: Toast = { id, type, message, duration };
 
-    this.toasts.update(toasts => [...toasts, toast]);
+    this.toasts.update((toasts) => [...toasts, toast]);
 
     if (duration > 0) {
       setTimeout(() => this.dismiss(id), duration);
@@ -38,7 +40,7 @@ export class ToastService {
   }
 
   dismiss(id: string): void {
-    this.toasts.update(toasts => toasts.filter(t => t.id !== id));
+    this.toasts.update((toasts) => toasts.filter((t) => t.id !== id));
   }
 
   clear(): void {
