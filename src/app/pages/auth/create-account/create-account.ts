@@ -1,9 +1,52 @@
-import { Component } from '@angular/core';
+
+import { Component, inject } from '@angular/core';
+import { InputComponent } from "../../../components/input/input";
+import { Router } from '@angular/router';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-create-account',
-  imports: [],
-  templateUrl: './create-account.html',
-  styleUrls: ['./create-account.css'],
+  imports: [
+    InputComponent,
+    ReactiveFormsModule,
+    CommonModule
+  ],
+  templateUrl: './create-account.html'
 })
-export class CreateAccountComponent { }
+export class CreateAccountPage {
+  private router = inject(Router);
+  private fb = inject(FormBuilder);
+
+  form = this.fb.group({
+    userName: ['', [Validators.required, Validators.minLength(3)]],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
+    confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
+  });
+
+  public onSubmit() {
+    if (this.form.valid) {
+      const value = this.form.value;
+      console.log('Login', value);
+      this.router.navigate(['/']);
+    } else {
+      this.form.markAllAsTouched();
+    }
+  }
+
+  public navigateToLogin() {
+    this.router.navigate(['/auth/login']);
+  }
+
+  public textError(field: string): string {
+    if (this.form.get(field)?.errors?.['required'])
+      return 'Campo obrigatório';
+    else if (this.form.get(field)?.errors?.['email'])
+      return 'Email inválido';
+    else if (this.form.get(field)?.errors?.['minlength'])
+      return 'A senha precisa ter no mínimo 6 caracteres.';
+
+    return '';
+  }
+}
