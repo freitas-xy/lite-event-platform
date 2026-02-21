@@ -4,6 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-create-account',
   imports: [],
   templateUrl: './create-account.html',
-  styleUrls: ['./create-account.scss'],
+  styleUrls: ['./create-account.css'],
 })
 export class CreateAccountComponent { }
