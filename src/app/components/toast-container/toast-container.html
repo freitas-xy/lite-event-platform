@@ -1,0 +1,8 @@
+<div class="fixed bottom-4 right-4 flex flex-col gap-3 pointer-events-none z-50">
+  @for (toast of toasts(); track toast.id) {
+  <div class="pointer-events-auto animate-slide-up">
+    <cmp-toast [type]="toast.type" [message]="toast.message" [id]="toast.id" (click)="dismiss(toast.id)">
+    </cmp-toast>
+  </div>
+  }
+</div>

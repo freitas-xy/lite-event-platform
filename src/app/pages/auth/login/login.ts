@@ -22,11 +22,11 @@ export class LoginPage {
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
-  public navigateCreateAccount() {
+  navigateCreateAccount() {
     this.router.navigate(['/auth/create-account']);
   }
 
-  public onSubmit() {
+  onSubmit() {
     if (this.form.valid) {
       const value = this.form.value;
       console.log('Login', value);
@@ -36,14 +36,14 @@ export class LoginPage {
     }
   }
 
-  public textError(field: string): string {
+  textError(field: string): string {
     if (this.form.get(field)?.errors?.['required'])
       return 'Campo obrigatório';
     else if (this.form.get(field)?.errors?.['email'])
       return 'Email inválido';
     else if (this.form.get(field)?.errors?.['minlength'])
       return 'A senha precisa ter no mínimo 6 caracteres.';
-    
+
     return '';
   }
 }

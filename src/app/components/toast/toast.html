@@ -1,0 +1,22 @@
+<div [id]="id" role="alert"
+  class="group flex items-center gap-3 w-full max-w-sm min-w-sm p-4 rounded-xl shadow-xl border backdrop-blur-sm transition-all duration-200"
+  [ngClass]="getContainerClasses()">
+  <div class="flex items-center justify-center shrink-0 w-8 h-8 rounded-lg" [ngClass]="getIconContainerClasses()">
+    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+      <path [attr.d]="getIconPath()" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" />
+    </svg>
+    <span class="sr-only">{{ getIconLabel() }}</span>
+  </div>
+
+  <div class="flex-1 text-sm leading-relaxed p-0 mb-0">
+    {{ message }}
+  </div>
+
+  <button type="button" (click)="close.emit()"
+    class="opacity-60 hover:opacity-100 transition-opacity rounded-md p-1 hover:bg-black/5" aria-label="Close toast">
+    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
+      <path d="M6 18 18 6M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+    </svg>
+  </button>
+</div>
