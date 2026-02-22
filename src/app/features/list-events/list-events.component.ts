@@ -6,6 +6,7 @@ import { AddEventDialogComponent } from './dialogs/add-event.dialog';
 import { ButtonComponent } from '../../shared/components/button.component';
 import { SkeletonComponent } from '../../shared/components/skeleton.component';
 import { CardComponent } from '../../shared/components/card.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'cmp-list-events',
@@ -21,6 +22,7 @@ import { CardComponent } from '../../shared/components/card.component';
 export class ListEventsComponent implements OnInit {
   protected readonly entitySrc: EntitiesService = inject(EntitiesService);
   protected readonly eventsSrc: EventsService = inject(EventsService);
+  protected readonly router: Router = inject(Router);
 
   public loading: boolean = true;
   public events: IEvent[] = [];
@@ -52,5 +54,11 @@ export class ListEventsComponent implements OnInit {
     } catch (error) {
       console.error('Erro ao criar evento', error);
     }
+  }
+
+  navigateToEvent(eventId: string) {
+    if (!eventId) return;
+
+    this.router.navigate([`app/events/${eventId}/participants`]);
   }
 }

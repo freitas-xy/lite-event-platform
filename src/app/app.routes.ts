@@ -48,7 +48,6 @@ export const routes: Routes = [
       },
       {
         path: 'events',
-
         children: [
           {
             path: '',
@@ -60,13 +59,25 @@ export const routes: Routes = [
           {
             path: ':id',
             children: [
-              {
-                path: 'participants',
-                loadComponent: () =>
-                  import('./features/event/participants/participants.component').then(
-                    (m) => m.ParticipantsComponent,
-                  ),
-              },
+            {
+              path: 'participants',
+              children: [
+                {
+                  path: '',
+                  loadComponent: () =>
+                    import('./features/event/participants/participants.component').then(
+                      (m) => m.ParticipantsComponent,
+                    ),
+                },
+                {
+                  path: 'add',
+                  loadComponent: () =>
+                    import('./features/event/participants/add-participant-page.component').then(
+                      (m) => m.AddParticipantPageComponent,
+                    ),
+                },
+              ],
+            },
               {
                 path: 'tickets',
                 loadComponent: () =>
