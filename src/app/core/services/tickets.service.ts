@@ -31,11 +31,13 @@ export class TicketsService {
       if (errorEvent || !eventData)
         throw new Error(errorEvent?.message || 'Erro ao buscar evento');
 
-      const { data, error } = await this.supabase.client.from('tickets').insert({
-        ...ticket,
-        create_user_id: userId,
-        entity_id: eventData.entity_id,
-      })
+      const { data, error } = await this.supabase.client
+        .from('tickets')
+        .insert({
+          ...ticket,
+          create_user_id: userId,
+          entity_id: eventData.entity_id,
+        })
         .select()
         .single();
 

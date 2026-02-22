@@ -15,7 +15,9 @@ export class ParticipantResponsesService {
   protected readonly supabase: SupabaseService = inject(SupabaseService);
   protected readonly user: UserService = inject(UserService);
 
-  async createResponse(response: IParticipantResponse): Promise<IParticipantResponse> {
+  async createResponse(
+    response: IParticipantResponse,
+  ): Promise<IParticipantResponse> {
     try {
       const { data, error } = await this.supabase.client
         .from('participant_responses')
@@ -30,7 +32,9 @@ export class ParticipantResponsesService {
     }
   }
 
-  async createBulk(responses: IParticipantResponse[]): Promise<IParticipantResponse[]> {
+  async createBulk(
+    responses: IParticipantResponse[],
+  ): Promise<IParticipantResponse[]> {
     try {
       const { data, error } = await this.supabase.client
         .from('participant_responses')
@@ -44,7 +48,9 @@ export class ParticipantResponsesService {
     }
   }
 
-  async getResponsesByParticipant(participantId: string): Promise<IParticipantResponse[]> {
+  async getResponsesByParticipant(
+    participantId: string,
+  ): Promise<IParticipantResponse[]> {
     try {
       const { data, error } = await this.supabase.client
         .from('participant_responses')

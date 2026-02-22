@@ -21,9 +21,22 @@ export class ParticipantsService {
       const userId = this.user.getUser()?.id;
       if (!userId) throw new Error('Usuário não autenticado');
 
+      const { data: eventData, error: errorEvent } = await this.supabase.client
+        .from('events')
+        .select('*')
+        .eq('id', participant.event_id)
+        .single();
+
+      if (errorEvent || !eventData)
+        throw new Error(errorEvent?.message || 'Erro ao buscar evento');
+
       const { data, error } = await this.supabase.client
         .from('participants')
-        .insert({ ...participant, create_user_id: userId })
+        .insert({
+          ...participant,
+          create_user_id: userId,
+          entity_id: eventData.entity_id,
+        })
         .select()
         .single();
 

@@ -27,7 +27,6 @@ import { UserService } from '../../../core/services/user.service';
 import { EventsService } from '../../../core/services/events.service';
 import { ButtonComponent } from '../../../shared/components/button.component';
 import { InputComponent } from '../../../shared/components/input.component';
-import { CardComponent } from '../../../shared/components/card.component';
 import { SkeletonComponent } from '../../../shared/components/skeleton.component';
 
 @Component({
@@ -38,7 +37,6 @@ import { SkeletonComponent } from '../../../shared/components/skeleton.component
     ReactiveFormsModule,
     ButtonComponent,
     InputComponent,
-    CardComponent,
     SkeletonComponent,
   ],
   template: `
@@ -153,7 +151,6 @@ import { SkeletonComponent } from '../../../shared/components/skeleton.component
               </div>
           }
 
-          <!-- Actions -->
           <div class="flex gap-3 justify-end pt-4">
             <cmp-button variant="outline" (click)="goBack()">
               Cancelar
@@ -220,7 +217,6 @@ export class AddParticipantPageComponent implements OnInit {
       this.tickets = tickets;
       this.questions = questions;
 
-      // Add form controls dynamically for each question
       this.questions.forEach((q) => {
         const validators = q.required ? [Validators.required] : [];
         this.form.addControl('answer_' + q.id, this.fb.control('', validators));
@@ -254,7 +250,6 @@ export class AddParticipantPageComponent implements OnInit {
       const userId = this.userSvc.getUser()?.id;
       if (!userId) throw new Error('Usuário não autenticado');
 
-      // Create participant
       const participantPayload: IParticipant = {
         event_id: eventId,
         name: this.form.value.name,
@@ -265,11 +260,9 @@ export class AddParticipantPageComponent implements OnInit {
       const createdParticipant =
         await this.participantsSvc.createParticipant(participantPayload);
 
-      // Get entity_id from the event to include in responses
       const event = await this.getEventEntity(eventId);
       if (!event) throw new Error('Evento não encontrado');
 
-      // Create responses for each question
       const responsesToCreate: IParticipantResponse[] = this.questions
         .filter((q) => {
           const answer = this.form.value['answer_' + q.id];
@@ -286,7 +279,6 @@ export class AddParticipantPageComponent implements OnInit {
         await this.responsesSvc.createBulk(responsesToCreate);
       }
 
-      // Success - navigate back
       this.router.navigate(['/', 'app', 'events', eventId, 'participants']);
     } catch (error) {
       console.error('Erro ao salvar participante:', error);
