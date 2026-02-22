@@ -23,8 +23,8 @@ export class ButtonComponent {
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
 
   getButtonClasses(): string {
-    const baseClasses =
-      'font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 rounded disabled:opacity-50 disabled:cursor-not-allowed';
+    const baseClasses = `font-medium cursor-pointer transition-colors focus:outline-none 
+      focus:ring-2 focus:ring-offset-2 rounded disabled:opacity-50 disabled:cursor-not-allowed`;
 
     const sizeClasses = this.getSizeClasses();
     const variantClasses = this.getVariantClasses();
@@ -47,15 +47,15 @@ export class ButtonComponent {
   private getVariantClasses(): string {
     switch (this.variant) {
       case 'primary':
-        return 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500';
+        return 'bg-blue-500 text-white hover:bg-blue-700 ';
       case 'outline':
-        return 'border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:ring-gray-500';
+        return 'border border-gray-300 text-gray-700 bg-white hover:bg-gray-50';
       case 'danger':
-        return 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500';
+        return 'bg-red-600 text-white hover:bg-red-700';
       case 'ghost':
-        return 'bg-transparent text-gray-700 hover:bg-gray-100 focus:ring-gray-500';
+        return 'bg-transparent text-gray-700 hover:bg-gray-100';
       default:
-        return 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500';
+        return 'bg-blue-600 text-white hover:bg-blue-700';
     }
   }
 }

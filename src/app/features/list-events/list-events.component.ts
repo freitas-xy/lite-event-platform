@@ -4,25 +4,37 @@ import { EventsService, IEvent } from '../../core/services/events.service';
 import { EntitiesService } from '../../core/services/entities.service';
 import { AddEventDialogComponent } from './dialogs/add-event.dialog';
 import { ButtonComponent } from '../../shared/components/button.component';
+import { SkeletonComponent } from '../../shared/components/skeleton.component';
 
 @Component({
   selector: 'cmp-list-events',
-  imports: [CommonModule, AddEventDialogComponent, ButtonComponent],
+  imports: [
+    CommonModule,
+    AddEventDialogComponent,
+    ButtonComponent,
+    SkeletonComponent,
+  ],
   templateUrl: './list-events.component.html',
 })
 export class ListEventsComponent implements OnInit {
   protected readonly entitySrc: EntitiesService = inject(EntitiesService);
   protected readonly eventsSrc: EventsService = inject(EventsService);
 
+  public loading: boolean = true;
   public events: IEvent[] = [];
 
   ngOnInit() {
+    this.loading = true;
     const entity = this.entitySrc.getEntity();
 
-    if (!entity) return;
+    if (!entity) {
+      this.loading = false;
+      return;
+    }
 
     this.eventsSrc.getEventsByEntity(entity.id).then((events) => {
       this.events = events;
+      this.loading = false;
     });
   }
 

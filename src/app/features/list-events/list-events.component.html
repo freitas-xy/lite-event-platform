@@ -11,82 +11,89 @@
       </cmp-button>
     }
   </div>
-
-  @if (events.length !== 0) {
-    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-      @for (event of events; track $index) {
-        <div
-          class="group rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"
-        >
-          <div class="flex items-start justify-between gap-3">
-            <h2 class="font-semibold text-gray-900 leading-tight">
-              {{ event.title }}
-            </h2>
-
-            <span
-              class="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600"
-            >
-              {{ event.status || "inativo" }}
-            </span>
-          </div>
-
-          @if (event.description) {
-            <p class="mt-2 text-sm text-gray-600 line-clamp-3">
-              {{ event.description }}
-            </p>
-          }
-
+  @if (!loading) {
+    @if (events.length !== 0) {
+      <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        @for (event of events; track $index) {
           <div
-            class="mt-4 flex items-center justify-between text-xs text-gray-500"
+            class="group rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"
           >
-            <span>
-              {{ event.start_date | date: "dd/MM/yyyy" }}
-            </span>
+            <div class="flex items-start justify-between gap-3">
+              <h2 class="font-semibold text-gray-900 leading-tight">
+                {{ event.title }}
+              </h2>
 
-            <span class="opacity-0 group-hover:opacity-100 transition">
-              Ver detalhes →
-            </span>
+              <span
+                class="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600"
+              >
+                {{ event.status || "inativo" }}
+              </span>
+            </div>
+
+            @if (event.description) {
+              <p class="mt-2 text-sm text-gray-600 line-clamp-3">
+                {{ event.description }}
+              </p>
+            }
+
+            <div
+              class="mt-4 flex items-center justify-between text-xs text-gray-500"
+            >
+              <span>
+                {{ event.start_date | date: "dd/MM/yyyy" }}
+              </span>
+
+              <span class="opacity-0 group-hover:opacity-100 transition">
+                Ver detalhes →
+              </span>
+            </div>
           </div>
-        </div>
-      }
-    </div>
-  } @else {
-    <div class="flex-1 flex items-center justify-center">
-      <div
-        class="flex flex-col items-center rounded-2xl border border-dashed border-gray-300 bg-gradient-to-b from-gray-50 to-white px-12 py-14 text-center shadow-sm"
-      >
-        <div
-          class="flex h-16 w-16 items-center justify-center rounded-full bg-blue-50 text-blue-500 mb-5"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-8 w-8"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="1.5"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-            />
-          </svg>
-        </div>
-
-        <h2 class="text-lg font-semibold text-gray-800">
-          Nenhum evento criado ainda
-        </h2>
-
-        <p class="mt-2 text-sm text-gray-500 max-w-sm">
-          Crie seu primeiro evento para começar a gerenciar inscrições,
-          participantes e datas importantes.
-        </p>
-
-        <cmp-button variant="primary" (click)="addDialog.open()">
-          Criar primeiro evento
-        </cmp-button>
+        }
       </div>
+    } @else {
+      <div class="flex-1 flex items-center justify-center">
+        <div
+          class="flex flex-col items-center rounded-2xl border border-dashed border-gray-300 bg-gradient-to-b from-gray-50 to-white px-12 py-14 text-center shadow-sm"
+        >
+          <div
+            class="flex h-16 w-16 items-center justify-center rounded-full bg-blue-50 text-blue-500 mb-5"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-8 w-8"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="1.5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+          </div>
+
+          <h2 class="text-lg font-semibold text-gray-800">
+            Nenhum evento criado ainda
+          </h2>
+
+          <p class="mt-2 text-sm text-gray-500 max-w-sm">
+            Crie seu primeiro evento para começar a gerenciar inscrições,
+            participantes e datas importantes.
+          </p>
+
+          <cmp-button variant="primary" (click)="addDialog.open()">
+            Criar primeiro evento
+          </cmp-button>
+        </div>
+      </div>
+    }
+  } @else {
+    <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      @for (i of [1, 2, 3, 4, 5]; track $index) {
+        <cmp-skeleton width="100%" height="100px"></cmp-skeleton>
+      }
     </div>
   }
 </div>

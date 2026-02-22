@@ -124,6 +124,10 @@ export class SidebarComponent {
       label: 'Eventos',
       route: '/events',
     },
+    {
+      label: 'Usuários',
+      route: '/users',
+    },
   ];
 
   toggleUserMenu(): void {

@@ -6,48 +6,52 @@ import { ButtonComponent } from './button.component';
   selector: 'app-dialog',
   standalone: true,
   imports: [CommonModule, ButtonComponent],
-  template: `<div
-    *ngIf="isOpen"
-    (click)="close()"
-    class="fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-black/25 backdrop-blur-sm transition-opacity duration-300
-    "
-  >
-    <div
-      *ngIf="isOpen"
-      (click)="close()"
-      class="fixed inset-0 z-[999] flex items-center justify-center bg-black/30 backdrop-blur-sm p-4"
-    >
+  template: `
+    @if (visible) {
       <div
-        (click)="$event.stopPropagation()"
-        class="relative w-full max-h-[90vh] rounded-xl bg-white shadow-2xl flex flex-col"
-        [ngClass]="size"
+        class="fixed inset-0 z-[999] flex items-center justify-center p-4 transition-all duration-200"
+        [class.bg-black/40]="isOpen"
+        [class.bg-black/0]="!isOpen"
+        (click)="close()"
       >
-        <div
-          class="shrink-0 px-5 py-4 bg-gray-50 border-b border-gray-300 font-semibold text-gray-800 rounded-t-xl"
-        >
-          {{ title }}
-        </div>
-
-        <div class="overflow-y-auto text-gray-600">
-          <ng-content></ng-content>
-        </div>
+        <div class="absolute inset-0 backdrop-blur-sm"></div>
 
         <div
-          class="shrink-0 flex justify-end gap-2 px-5 py-3 bg-gray-50 border-t border-gray-300 rounded-b-xl"
+          (click)="$event.stopPropagation()"
+          class="relative flex max-h-[90vh] w-full flex-col rounded-xl bg-white shadow-2xl transition-all duration-200 ease-out"
+          [ngClass]="size"
+          [class.opacity-0]="!isOpen"
+          [class.opacity-100]="isOpen"
+          [class.scale-95]="!isOpen"
+          [class.scale-100]="isOpen"
         >
-          <cmp-button variant="outline" (click)="close()">
-            {{ cancelLabel }}
-          </cmp-button>
+          <div
+            class="shrink-0 rounded-t-xl border-b border-gray-300 bg-gray-50 px-5 py-4 font-semibold text-gray-800"
+          >
+            {{ title }}
+          </div>
 
-          @if (!hiddenConfirm) {
-            <cmp-button (click)="confirm()">
-              {{ confirmLabel }}
+          <div class="overflow-y-auto text-gray-600">
+            <ng-content></ng-content>
+          </div>
+
+          <div
+            class="shrink-0 flex justify-end gap-2 rounded-b-xl border-t border-gray-300 bg-gray-50 px-5 py-3"
+          >
+            <cmp-button variant="outline" (click)="close()">
+              {{ cancelLabel }}
             </cmp-button>
-          }
+
+            @if (!hiddenConfirm) {
+              <cmp-button (click)="confirm()">
+                {{ confirmLabel }}
+              </cmp-button>
+            }
+          </div>
         </div>
       </div>
-    </div>
-  </div>`,
+    }
+  `,
 })
 export class DialogComponent {
   @Input() title = 'Dialog';
@@ -60,14 +64,23 @@ export class DialogComponent {
   @Output() closed = new EventEmitter<void>();
 
   isOpen = false;
+  visible = false;
 
   open() {
-    this.isOpen = true;
+    this.visible = true;
+
+    requestAnimationFrame(() => {
+      this.isOpen = true;
+    });
   }
 
   close() {
-    this.closed.emit();
     this.isOpen = false;
+    this.closed.emit();
+
+    setTimeout(() => {
+      this.visible = false;
+    }, 200);
   }
 
   confirm() {
