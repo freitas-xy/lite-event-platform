@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { User } from '@supabase/supabase-js';
+import { SupabaseService } from './supabase.service';
 
 export interface IUser {
   displayName: string;
@@ -12,6 +13,7 @@ export interface IUser {
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
+  protected readonly supabase: SupabaseService = inject(SupabaseService);
   private readonly userKey = 'user';
 
   public setUser(user: User): void {
@@ -25,6 +27,37 @@ export class UserService {
     };
 
     localStorage.setItem(this.userKey, JSON.stringify(userInfo));
+  }
+  
+  public async login(email: string, password: string): Promise<User> {
+    const { data, error } = await this.supabase.client.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error || !data.user)
+      throw new Error(error?.message || 'Erro ao fazer login');
+
+    this.setUser(data.user);
+    return data.user;
+  }
+
+  public async signUp(
+    userName: string,
+    email: string,
+    password: string,
+  ): Promise<User> {
+    const { data, error } = await this.supabase.client.auth.signUp({
+      email,
+      password,
+      options: { data: { display_name: userName } },
+    });
+
+    if (error || !data.user)
+      throw new Error(error?.message || 'Erro ao criar conta');
+
+    this.setUser(data.user);
+    return data.user;
   }
 
   public getUser(): IUser | null {

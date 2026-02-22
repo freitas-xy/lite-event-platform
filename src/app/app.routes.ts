@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -29,6 +30,24 @@ export const routes: Routes = [
           import('./features/auth/create-account/create-account.component').then(
             (m) => m.CreateAccountPage,
           ),
+      },
+    ],
+  },
+  {
+    path: 'app',
+    canMatch: [authGuard],
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./layouts/app.layout').then((m) => m.AppLayout),
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./features/home/home.component').then((m) => m.HomePage),
+      },
+      {
+        path: '**',
+        redirectTo: '',
       },
     ],
   },

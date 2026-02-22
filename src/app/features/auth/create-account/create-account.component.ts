@@ -21,6 +21,7 @@ import { UserService } from '../../../core/services/user.service';
   selector: 'app-create-account',
   imports: [InputComponent, ReactiveFormsModule, CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
   templateUrl: './create-account.component.html',
 })
 export class CreateAccountPage {
@@ -55,22 +56,11 @@ export class CreateAccountPage {
     this.cdr.markForCheck();
 
     try {
-      const { data, error } = await this.supabase.client.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { display_name: userName },
-        },
-      });
-
-      if (error || !data.user)
-        return this.showErrorToast(error?.message || 'Erro ao criar conta');
-
-      this.user.setUser(data.user);
-
-      await this.router.navigate(['/auth/login']);
-    } catch (error) {
-      this.showErrorToast('Ocorreu um erro ao criar a conta');
+      this.loading = true;
+      await this.user.signUp(userName, email, password);
+      await this.router.navigate(['/app']);
+    } catch (error: any) {
+      this.showErrorToast(error.message || 'Ocorreu um erro ao criar a conta');
     } finally {
       this.loading = false;
       this.cdr.markForCheck();
