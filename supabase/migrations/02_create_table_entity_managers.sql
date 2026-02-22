@@ -6,11 +6,4 @@ create table
         primary key (entity_id, manager_id)
     );
 
-GO
 alter table entity_managers enable row level security;
-
-GO create policy "Enable insert for authenticated users only" on "public"."entity_managers" as PERMISSIVE for INSERT to authenticated
-with
-    check (auth.uid () is not null);
-
-GO

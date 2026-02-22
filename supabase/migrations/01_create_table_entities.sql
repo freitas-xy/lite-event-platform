@@ -7,9 +7,4 @@ create table
         create_user_id uuid references auth.users (id)
     );
 
-GO
 alter table entities enable row level security;
-
-GO create policy "Enable insert for authenticated users only" on "public"."entities" as PERMISSIVE for INSERT to authenticated
-with
-    check (auth.uid () is not null);
