@@ -5,6 +5,7 @@ import { EntitiesService } from '../../core/services/entities.service';
 import { AddEventDialogComponent } from './dialogs/add-event.dialog';
 import { ButtonComponent } from '../../shared/components/button.component';
 import { SkeletonComponent } from '../../shared/components/skeleton.component';
+import { CardComponent } from '../../shared/components/card.component';
 
 @Component({
   selector: 'cmp-list-events',
@@ -12,6 +13,7 @@ import { SkeletonComponent } from '../../shared/components/skeleton.component';
     CommonModule,
     AddEventDialogComponent,
     ButtonComponent,
+    CardComponent,
     SkeletonComponent,
   ],
   templateUrl: './list-events.component.html',

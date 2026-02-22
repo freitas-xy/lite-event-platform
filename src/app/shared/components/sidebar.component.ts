@@ -18,7 +18,7 @@ interface SidebarItem {
     <div
       class="relative flex h-screen w-full max-w-[20rem] flex-col rounded-xl bg-white bg-clip-border p-4 text-gray-700 shadow-xl shadow-blue-gray-900/5"
     >
-      <div class="p-4 mb-2">
+      <div class="p-2 ">
         <h5
           class="block font-sans text-xm 
           antialiased font-semibold leading-snug tracking-normal"
@@ -27,7 +27,7 @@ interface SidebarItem {
         </h5>
       </div>
       <nav
-        class="flex min-w-[240px] flex-col gap-1 p-2 font-sans text-base font-normal text-blue-gray-700"
+        class="flex min-w-[240px] flex-col gap-1 font-sans text-base font-normal text-blue-gray-700"
       >
         @for (item of itemsSidebar; track $index) {
           <div
@@ -46,6 +46,26 @@ interface SidebarItem {
             {{ item.label }}
           </div>
         }
+        <div>
+          <div class=" text-sm text-gray-600 p-2 font-semibold">Evento</div>
+          @for (item of eventsItemsSidebar; track $index) {
+            <div
+              [ngClass]="
+                isActive(item.route)
+                  ? 'bg-indigo-50 text-indigo-600 font-medium'
+                  : 'text-gray-600 hover:bg-gray-50'
+              "
+              role="button"
+              class="flex items-center w-full p-3 cursor-pointer hover:bg-gray-50 leading-tight transition-all
+              rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900
+              focus:bg-blue-gray-50 focus:bg-opacity-80  text-sm
+              focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
+              (click)="navigateTo(item.route)"
+            >
+              {{ item.label }}
+            </div>
+          }
+        </div>
       </nav>
       <div class="absolute bottom-0 left-0 w-full p-4">
         <hr class="mb-4 border-b-0.5 border-gray-300" />
@@ -124,9 +144,20 @@ export class SidebarComponent {
       label: 'Eventos',
       route: '/events',
     },
+  ];
+
+  eventsItemsSidebar: SidebarItem[] = [
     {
-      label: 'Usuários',
-      route: '/users',
+      label: 'Participantes',
+      route: '/events/participants',
+    },
+    {
+      label: 'Ingressos',
+      route: '/events/tickets',
+    },
+    {
+      label: 'Formulários',
+      route: '/events/forms',
     },
   ];
 
