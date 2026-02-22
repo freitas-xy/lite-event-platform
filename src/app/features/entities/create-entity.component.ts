@@ -56,7 +56,7 @@ export class CreateEntityPage implements OnInit {
   }
 
   private async createEntity() {
-    this.entityService.createEntity(
+    await this.entityService.createEntity(
       'Minha nova entidade',
       'Descrição da minha nova entidade',
     );

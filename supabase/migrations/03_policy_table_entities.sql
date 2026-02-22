@@ -28,3 +28,7 @@ select
                 and em.manager_id = auth.uid ()
         )
     );
+
+create policy "Creator can select own entities" on public.entities for
+select
+    to authenticated using (create_user_id = auth.uid ());

@@ -10,19 +10,19 @@ export class EntitiesService {
 
   async createEntity(name: string, description: string): Promise<void> {
     try {
+      const userId = this.user.getUser()?.id;
+      if (!userId) throw new Error('Usuário não autenticado');
+
       const entity = { name, description };
       const { data: entityData, error: entityError } =
         await this.supabase.client
           .from('entities')
-          .insert(entity)
+          .insert({ ...entity, create_user_id: userId })
           .select()
           .single();
 
       if (entityError || !entityData)
         throw new Error(entityError?.message || 'Erro ao criar entidade');
-
-      const userId = this.user.getUser()?.id;
-      if (!userId) throw new Error('Usuário não autenticado');
 
       const { error: managerError } = await this.supabase.client
         .from('entity_managers')
@@ -73,9 +73,6 @@ export class EntitiesService {
   }
 
   async getEntityOrRedirect(): Promise<boolean> {
-    const entity = this.getEntity();
-    if (entity) return true;
-
     const entities = await this.listEntities();
     if (entities.length > 0) {
       localStorage.setItem(this.entityKey, JSON.stringify(entities[0]));
@@ -83,5 +80,16 @@ export class EntitiesService {
     }
 
     return false;
+  }
+
+  selectEntity(entityId: string): void {
+    this.clearEntity();
+
+    this.listEntities()
+      .then((entities) => {
+        const entity = entities.find((e: any) => e.id === entityId);
+        localStorage.setItem(this.entityKey, JSON.stringify(entity));
+      })
+      .catch((error) => console.error(error));
   }
 }

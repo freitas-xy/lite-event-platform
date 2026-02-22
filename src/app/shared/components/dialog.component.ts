@@ -21,7 +21,7 @@ import { CommonModule } from '@angular/common';
         {{ title }}
       </div>
       <div
-        class="relative border-t border-slate-200 py-4 leading-normal text-slate-600 font-light"
+        class="relative border-t border-slate-200 leading-normal text-slate-600 font-light"
       >
         <ng-content></ng-content>
       </div>
