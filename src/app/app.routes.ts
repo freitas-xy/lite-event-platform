@@ -48,10 +48,42 @@ export const routes: Routes = [
       },
       {
         path: 'events',
-        loadComponent: () =>
-          import('./features/list-events/list-events.component').then(
-            (m) => m.ListEventsComponent,
-          ),
+
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/list-events/list-events.component').then(
+                (m) => m.ListEventsComponent,
+              ),
+          },
+          {
+            path: ':id',
+            children: [
+              {
+                path: 'participants',
+                loadComponent: () =>
+                  import('./features/event/participants/participants.component').then(
+                    (m) => m.ParticipantsComponent,
+                  ),
+              },
+              {
+                path: 'tickets',
+                loadComponent: () =>
+                  import('./features/event/ticket/ticket.component').then(
+                    (m) => m.TicketComponent,
+                  ),
+              },
+              {
+                path: 'forms',
+                loadComponent: () =>
+                  import('./features/event/form/form.component').then(
+                    (m) => m.FormComponent,
+                  ),
+              },
+            ],
+          },
+        ],
       },
       {
         path: '**',

@@ -46,26 +46,30 @@ interface SidebarItem {
             {{ item.label }}
           </div>
         }
-        <div>
-          <div class=" text-sm text-gray-600 p-2 font-semibold">Evento</div>
-          @for (item of eventsItemsSidebar; track $index) {
-            <div
-              [ngClass]="
-                isActive(item.route)
-                  ? 'bg-indigo-50 text-indigo-600 font-medium'
-                  : 'text-gray-600 hover:bg-gray-50'
-              "
-              role="button"
-              class="flex items-center w-full p-3 cursor-pointer hover:bg-gray-50 leading-tight transition-all
+        @if (currentEventId()) {
+          <div>
+            <div class=" text-sm text-gray-600 p-2 font-semibold">Evento</div>
+            @for (item of eventsItemsSidebar; track $index) {
+              <div
+                [ngClass]="
+                  isActive('/events/' + currentEventId() + item.route)
+                    ? 'bg-indigo-50 text-indigo-600 font-medium'
+                    : 'text-gray-600 hover:bg-gray-50'
+                "
+                role="button"
+                class="flex items-center w-full p-3 cursor-pointer hover:bg-gray-50 leading-tight transition-all
               rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900
               focus:bg-blue-gray-50 focus:bg-opacity-80  text-sm
               focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
-              (click)="navigateTo(item.route)"
-            >
-              {{ item.label }}
-            </div>
-          }
-        </div>
+                (click)="
+                  navigateTo('/events/' + currentEventId() + item.route)
+                "
+              >
+                {{ item.label }}
+              </div>
+            }
+          </div>
+        }
       </nav>
       <div class="absolute bottom-0 left-0 w-full p-4">
         <hr class="mb-4 border-b-0.5 border-gray-300" />
@@ -149,15 +153,15 @@ export class SidebarComponent {
   eventsItemsSidebar: SidebarItem[] = [
     {
       label: 'Participantes',
-      route: '/events/participants',
+      route: '/participants',
     },
     {
       label: 'Ingressos',
-      route: '/events/tickets',
+      route: '/tickets',
     },
     {
       label: 'Formulários',
-      route: '/events/forms',
+      route: '/forms',
     },
   ];
 
@@ -173,6 +177,11 @@ export class SidebarComponent {
 
   isActive(route: string): boolean {
     return this.router.url === `/app${route}`;
+  }
+
+  currentEventId(): string | null {
+    const match = this.router.url.match(/^\/app\/events\/([^\/]+)(?:\/|$)/);
+    return match ? match[1] : null;
   }
 
   navigateTo(route: string): void {
