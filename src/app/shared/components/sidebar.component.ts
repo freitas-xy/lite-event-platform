@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { UserService } from '../../core/services/user.service';
 import { ToastService } from '../../core/services/toast.service';
@@ -8,7 +8,6 @@ import { EntitySwitchDialog } from '../../features/entities/dialogs/entity-switc
 
 interface SidebarItem {
   label: string;
-  iconSVG: SafeHtml;
   route: string;
 }
 
@@ -21,7 +20,8 @@ interface SidebarItem {
     >
       <div class="p-4 mb-2">
         <h5
-          class="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal "
+          class="block font-sans text-xm 
+          antialiased font-semibold leading-snug tracking-normal"
         >
           Event Lite
         </h5>
@@ -37,14 +37,12 @@ interface SidebarItem {
                 : 'text-gray-600 hover:bg-gray-50'
             "
             role="button"
-            class="flex items-center w-full p-3 cursor-pointer hover:bg-gray-50 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 
-            focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
+            class="flex items-center w-full p-3 cursor-pointer hover:bg-gray-50 leading-tight transition-all
+              rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900
+              focus:bg-blue-gray-50 focus:bg-opacity-80  text-sm
+              focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900"
             (click)="navigateTo(item.route)"
           >
-            <div
-              class="grid mr-4 place-items-center"
-              [innerHTML]="item.iconSVG"
-            ></div>
             {{ item.label }}
           </div>
         }
@@ -120,20 +118,10 @@ export class SidebarComponent {
   itemsSidebar: SidebarItem[] = [
     {
       label: 'Dashboard',
-      iconSVG: this.sanitizer.bypassSecurityTrustHtml(`
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
-      </svg>
-      `),
       route: '',
     },
     {
       label: 'Eventos',
-      iconSVG: this.sanitizer.bypassSecurityTrustHtml(`
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
-      </svg>
-      `),
       route: '/events',
     },
   ];

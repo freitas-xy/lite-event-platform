@@ -15,7 +15,7 @@ import { LabelComponent } from './label.component';
       <input
         class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 pr-10"
         [value]="value"
-        (input)="onInput($event.target.value)"
+        (input)="onInput($any($event.target).value)"
         (blur)="onBlur()"
         [disabled]="disabled"
         [type]="type === 'password' && visible ? 'text' : type"

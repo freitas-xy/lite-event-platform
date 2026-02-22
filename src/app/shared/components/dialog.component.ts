@@ -1,10 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ButtonComponent } from './button.component';
 
 @Component({
   selector: 'app-dialog',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonComponent],
   template: `<div
     *ngIf="isOpen"
     (click)="close()"
@@ -12,38 +13,38 @@ import { CommonModule } from '@angular/common';
     "
   >
     <div
-      (click)="$event.stopPropagation()"
-      [class]="'relative m-4  rounded-lg bg-white shadow-xl' + size"
+      *ngIf="isOpen"
+      (click)="close()"
+      class="fixed inset-0 z-[999] flex items-center justify-center bg-black/30 backdrop-blur-sm p-4"
     >
       <div
-        class="flex shrink-0 p-4 rounded-t-lg items-center bg-gray-100 pb-4 font-medium text-slate-800"
+        (click)="$event.stopPropagation()"
+        class="relative w-full max-h-[90vh] rounded-xl bg-white shadow-2xl flex flex-col"
+        [ngClass]="size"
       >
-        {{ title }}
-      </div>
-      <div
-        class="relative border-t border-slate-200 leading-normal text-slate-600 font-light"
-      >
-        <ng-content></ng-content>
-      </div>
-      <div
-        class=" flex justify-end shrink-0 p-4 py-2 rounded-b-lg items-center bg-gray-100 font-medium text-slate-800"
-      >
-        <button
-          class="bg-white cursor-pointer disabled:opacity-50 hover:bg-gray-50 text-black border border-slate-200 py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          type="button"
-          (click)="close()"
+        <div
+          class="shrink-0 px-5 py-4 bg-gray-50 border-b border-gray-300 font-semibold text-gray-800 rounded-t-xl"
         >
-          {{ cancelLabel }}
-        </button>
-        @if (!hiddenConfirm) {
-          <button
-            class="bg-blue-500 cursor-pointer disabled:opacity-50 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="button"
-            (click)="confirm()"
-          >
-            {{ confirmLabel }}
-          </button>
-        }
+          {{ title }}
+        </div>
+
+        <div class="overflow-y-auto text-gray-600">
+          <ng-content></ng-content>
+        </div>
+
+        <div
+          class="shrink-0 flex justify-end gap-2 px-5 py-3 bg-gray-50 border-t border-gray-300 rounded-b-xl"
+        >
+          <cmp-button variant="outline" (click)="close()">
+            {{ cancelLabel }}
+          </cmp-button>
+
+          @if (!hiddenConfirm) {
+            <cmp-button (click)="confirm()">
+              {{ confirmLabel }}
+            </cmp-button>
+          }
+        </div>
       </div>
     </div>
   </div>`,

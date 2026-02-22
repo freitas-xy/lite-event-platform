@@ -7,7 +7,9 @@ import { SidebarComponent } from '../components/sidebar.component';
   standalone: true,
   template: ` <div class="flex h-screen w-screen">
     <cmp-sidebar />
-    <router-outlet></router-outlet>
+    <main class="flex-1 overflow-auto">
+      <router-outlet></router-outlet>
+    </main>
   </div>`,
   imports: [RouterOutlet, SidebarComponent],
 })
