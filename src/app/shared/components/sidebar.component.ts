@@ -86,7 +86,12 @@ interface SidebarItem {
           [ngClass]="userMenuOpen ? 'max-h-40 mt-3' : 'max-h-0'"
         >
           <div class="flex flex-col gap-1 text-sm">
-            <app-entity-switch-dialog />
+            <button
+              class="text-left cursor-pointer py-2 rounded-lg text-gray-600 hover:bg-gray-50"
+              (click)="openDialogEntitySwitch = true"
+            >
+              Unidades
+            </button>
             <button
               class="text-left cursor-pointer py-2 rounded-lg hover:bg-red-50 text-red-500"
               (click)="logout()"
@@ -97,6 +102,10 @@ interface SidebarItem {
         </div>
       </div>
     </div>
+    <app-entity-switch-dialog
+      [open]="openDialogEntitySwitch"
+      (close)="openDialogEntitySwitch = false"
+    />
   `,
   imports: [CommonModule, EntitySwitchDialog],
 })
@@ -106,6 +115,7 @@ export class SidebarComponent {
   protected toast: ToastService = inject(ToastService);
   protected router: Router = inject(Router);
 
+  openDialogEntitySwitch: boolean = false;
   userMenuOpen = false;
   itemsSidebar: SidebarItem[] = [
     {

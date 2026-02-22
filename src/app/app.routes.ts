@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { entityGuard } from './core/guards/entity.guard';
 
 export const routes: Routes = [
   {
@@ -35,10 +36,10 @@ export const routes: Routes = [
   },
   {
     path: 'app',
-    canMatch: [authGuard],
-    canActivate: [authGuard],
+    canMatch: [authGuard, entityGuard],
+    canActivate: [authGuard, entityGuard],
     loadComponent: () =>
-      import('./layouts/app.layout').then((m) => m.AppLayout),
+      import('./shared/layouts/app.layout').then((m) => m.AppLayout),
     children: [
       {
         path: '',
@@ -50,6 +51,15 @@ export const routes: Routes = [
         redirectTo: '',
       },
     ],
+  },
+  {
+    path: 'create-entities',
+    canMatch: [authGuard],
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/entities/create-entity.component').then(
+        (m) => m.CreateEntityPage,
+      ),
   },
   {
     path: '**',

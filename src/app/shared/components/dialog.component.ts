@@ -8,14 +8,15 @@ import { CommonModule } from '@angular/common';
   template: `<div
     *ngIf="isOpen"
     (click)="close()"
-    class="fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-black/25 backdrop-blur-sm transition-opacity duration-300"
+    class="fixed inset-0 z-[999] grid h-screen w-screen place-items-center bg-black/25 backdrop-blur-sm transition-opacity duration-300
+    "
   >
     <div
       (click)="$event.stopPropagation()"
-      class="relative m-4 p-4 w-2/5 min-w-[40%] max-w-[40%] rounded-lg bg-white shadow-xl"
+      [class]="'relative m-4  rounded-lg bg-white shadow-xl' + size"
     >
       <div
-        class="flex shrink-0 items-center pb-4 text-xl font-medium text-slate-800"
+        class="flex shrink-0 p-4 rounded-t-lg items-center bg-gray-100 pb-4 font-medium text-slate-800"
       >
         {{ title }}
       </div>
@@ -24,31 +25,38 @@ import { CommonModule } from '@angular/common';
       >
         <ng-content></ng-content>
       </div>
-      <div class="flex shrink-0 flex-wrap items-center pt-4 justify-end">
+      <div
+        class=" flex justify-end shrink-0 p-4 py-2 rounded-b-lg items-center bg-gray-100 font-medium text-slate-800"
+      >
         <button
-          (click)="close()"
-          class="rounded-md border border-transparent py-2 px-4 text-center text-sm transition-all text-slate-600 hover:bg-slate-100 focus:bg-slate-100 active:bg-slate-100 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          class="bg-white cursor-pointer disabled:opacity-50 hover:bg-gray-50 text-black border border-slate-200 py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="button"
+          (click)="close()"
         >
           {{ cancelLabel }}
         </button>
-        <button
-          (click)="confirm()"
-          class="rounded-md bg-green-600 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-green-700 focus:shadow-none active:bg-green-700 hover:bg-green-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ml-2"
-          type="button"
-        >
-          {{ confirmLabel }}
-        </button>
+        @if (!hiddenConfirm) {
+          <button
+            class="bg-blue-500 cursor-pointer disabled:opacity-50 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="button"
+            (click)="confirm()"
+          >
+            {{ confirmLabel }}
+          </button>
+        }
       </div>
     </div>
   </div>`,
 })
 export class DialogComponent {
   @Input() title = 'Dialog';
-  @Input() cancelLabel = 'Cancel';
-  @Input() confirmLabel = 'Confirm';
+  @Input() cancelLabel = 'Cancelar';
+  @Input() confirmLabel = 'Confirmar';
+  @Input() hiddenConfirm = false;
+  @Input() size = 'w-2/5 min-w-[40%] max-w-[40%]';
 
   @Output() confirmed = new EventEmitter<void>();
+  @Output() closed = new EventEmitter<void>();
 
   isOpen = false;
 
@@ -57,6 +65,7 @@ export class DialogComponent {
   }
 
   close() {
+    this.closed.emit();
     this.isOpen = false;
   }
 
